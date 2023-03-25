@@ -1,0 +1,21 @@
+{
+  "name": "fraction-framework/fraction",
+  "description": "Attribute-driven PHP framework",
+  "version": "1.0.0-beta",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Andrii Kryvoviaz",
+      "email": "andriy.kryvoviaz@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^8.2",
+    "ext-simplexml": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Fraction\\": "src/"
+    }
+  }
+}

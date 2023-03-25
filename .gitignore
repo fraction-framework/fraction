@@ -1,0 +1,33 @@
+# Ignore IDE and editor configurations
+/.idea/
+/.vscode/
+
+# Ignore common operating system files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Ignore Composer and PHP dependency files
+/vendor/
+/composer.lock
+/composer.phar
+
+# Ignore environment and configuration files
+.env
+.env.local
+.env.*.local
+
+# Ignore PHPUnit test artifacts
+/phpunit.xml
+/phpunit-result.xml
+/coverage/
+
+# Ignore other common temporary files
+*.log
+*.bak
+*.swp
+*.swo
+*.tmp
+*.temp
+*.retry
+*.cache
