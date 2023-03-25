@@ -14,11 +14,12 @@ abstract class AbstractConfig {
   public function __construct(private readonly Locator $locator, private readonly Yaml $yaml) {
     $configFile = $this->locator->getConfigDir() . '/' . $this->getConfigFile();
 
-    if (!file_exists($configFile)) {
-      return null;
-    }
-
     $configTree = $this->buildConfigTree(ConfigNodeFactory::createRootGroup());
+
+    if (!file_exists($configFile)) {
+      $this->config = $configTree;
+      return;
+    }
 
     $configData = $this->yaml->parseFile($configFile);
     $this->config = $this->applyConfig($configTree, $configData);

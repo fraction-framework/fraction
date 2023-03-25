@@ -46,7 +46,7 @@ class Kernel {
     } catch (RequestException $e) {
       $kernel->getViewHandler()->setData($e->getResponse(), $e->getResponseStatus());
     } catch (Throwable $e) {
-      $kernel->getEventDispatcher()->dispatch(EventType::Exception, $e);
+      $kernel->getEventDispatcher()?->dispatch(EventType::Exception, $e);
       $kernel
         ->getViewHandler()
         ->setData(
@@ -85,9 +85,9 @@ class Kernel {
   }
 
   /**
-   * @return EventDispatcher
+   * @return ?EventDispatcher
    */
-  private function getEventDispatcher(): EventDispatcher {
+  private function getEventDispatcher(): ?EventDispatcher {
     return $this->eventDispatcher;
   }
 
@@ -126,7 +126,7 @@ class Kernel {
    */
   private function run(): void {
     $response = $this->getViewHandler()->render();
-    $this->eventDispatcher->dispatch(EventType::Response, $response);
+    $this->eventDispatcher?->dispatch(EventType::Response, $response);
 
     $response->send();
 
@@ -135,6 +135,6 @@ class Kernel {
       fastcgi_finish_request();
     }
 
-    $this->eventDispatcher->dispatch(EventType::Terminate);
+    $this->eventDispatcher?->dispatch(EventType::Terminate);
   }
 }
