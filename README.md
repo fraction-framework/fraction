@@ -8,14 +8,46 @@
 
 # Fraction Framework
 
-Fraction is an attribute-based framework for handling HTTP requests in a web application. It is designed to be simple,
-flexible, and easy to use.
+Fraction is an attribute-based framework. The main perpose of Fraction is to provide a simple tool for building
+self-documenting RESTful APIs, wheareas it can be used for building any kind of web application.
 Note that Fraction is still in development and is not recommended for production use. Many features are still missing.
 
 ## Documentation
 
 For a comprehensive guide on how to use Fraction Framework, detailed information on its features, and best practices,
 please visit the official [Fraction Framework documentation](https://fraction.anir.cloud).
+
+## Installation
+
+To create a new project with Fraction, open your terminal and navigate to the directory where you want to create your
+project. Run the following command:
+
+```bash
+composer create-project fraction-framework/starter your_project_name
+```
+
+Replace `your_project_name` with the desired name for your project. This command will create a new directory with the
+specified project name and install the latest version of Fraction and its dependencies.
+
+Alternatively, you can install Fraction as a dependency in an existing project. To do so, run the following command:
+
+```bash
+composer require fraction-framework/fraction
+```
+
+## Basic Usage
+
+Creating your first API endpoint is as simple as follows:
+
+```php
+#[Route(RequestMethod::GET, '/')]
+#[View(response: ResponseType::JSON)]
+public function index(): array {
+  return ['message' => 'Hello World!'];
+}
+```
+
+For more information on how to use Fraction, please refer to the [documentation](https://fraction.anir.cloud).
 
 ## Demo Application
 
