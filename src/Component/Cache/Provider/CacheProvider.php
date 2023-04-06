@@ -5,10 +5,35 @@ namespace Fraction\Component\Cache\Provider;
 use Fraction\Component\Cache\CacheEntity;
 
 abstract class CacheProvider {
+  /**
+   * @var string
+   */
   protected string $cacheEntity;
+  /**
+   * @var int
+   */
   protected int $expirationTime;
 
-  public function get(string $key) {
+  /**
+   * @return void
+   */
+  abstract public function clear(): void;
+
+  /**
+   * @param string $key
+   * @return void
+   */
+  public function delete(string $key): void {
+    $cacheData = $this->readCacheFile();
+    unset($cacheData[$key]);
+    $this->writeToCache($cacheData);
+  }
+
+  /**
+   * @param string $key
+   * @return false|mixed
+   */
+  public function get(string $key): mixed {
     if ($this->isset($key)) {
       return $this->readFromCache($key);
     } else {
@@ -16,6 +41,10 @@ abstract class CacheProvider {
     }
   }
 
+  /**
+   * @param string $key
+   * @return bool
+   */
   public function isset(string $key): bool {
     $cacheData = $this->readCacheFile();
     if (isset($cacheData[$key]) && time() < $cacheData[$key]['expires']) {
@@ -25,6 +54,11 @@ abstract class CacheProvider {
     }
   }
 
+  /**
+   * @param string $key
+   * @param $value
+   * @return void
+   */
   public function set(string $key, $value): void {
     $cacheData = $this->readCacheFile();
     $cacheData[$key] = [
@@ -48,12 +82,23 @@ abstract class CacheProvider {
     $this->expirationTime = $expirationTime;
   }
 
+  /**
+   * @return array
+   */
   abstract protected function readCacheFile(): array;
 
-  protected function readFromCache(string $key) {
+  /**
+   * @param string $key
+   * @return mixed
+   */
+  protected function readFromCache(string $key): mixed {
     $cacheData = $this->readCacheFile();
     return $cacheData[$key]['value'];
   }
 
+  /**
+   * @param array $cacheData
+   * @return void
+   */
   abstract protected function writeToCache(array $cacheData): void;
 }
