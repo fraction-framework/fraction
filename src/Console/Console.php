@@ -2,9 +2,13 @@
 
 namespace Fraction\Console;
 
+use Fraction\Component\Cache\CacheEntity;
+use Fraction\Component\Reader;
+use Fraction\Console\Attribute\Command;
 use Fraction\Console\Commands\CacheCommand;
 use Fraction\DependencyInjection\Container;
 use Fraction\DependencyInjection\ContainerInterface;
+use Fraction\Throwable\FractionException;
 use JetBrains\PhpStorm\NoReturn;
 
 class Console implements ConsoleInterface {
@@ -23,22 +27,26 @@ class Console implements ConsoleInterface {
 
   /**
    * @param ContainerInterface $container
+   * @param Reader $reader
    */
-  public function __construct(private readonly ContainerInterface $container) {
+  public function __construct(private readonly ContainerInterface $container, Reader $reader) {
+    $commandClasses = $reader->getClassesWithAttribute(Command::class, CacheEntity::COMMAND);
 
     $this->registerCommandFromArray([
       CacheCommand::class,
+      ...$commandClasses
     ]);
   }
 
   /**
    * @param $argv
    * @return static
+   * @throws FractionException
    */
   public static function fromArgs($argv): self {
     $container = Container::create();
+    $console = $container->get(Console::class);
 
-    $console = new self($container);
     try {
       $console->run($argv);
     } catch (\Throwable $e) {

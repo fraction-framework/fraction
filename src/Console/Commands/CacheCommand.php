@@ -20,6 +20,7 @@ readonly class CacheCommand {
   #[Flag(name: 'c', description: 'Clear Controller cache')]
   #[Flag(name: 'b', description: 'Clear Binder cache')]
   #[Flag(name: 'e', description: 'Clear EventSubscriber cache')]
+  #[Flag(name: 't', description: 'Clear Command cache')]
   public function clear(ConsoleInterface $console): void {
     if (empty($console->getFlags())) {
       $console->printCommandUsage('cache.clear');
@@ -41,6 +42,12 @@ readonly class CacheCommand {
       $this->cache->setCacheEntity(CacheEntity::EVENT_SUBSCRIBER);
       $this->cache->clear();
       $entitiesCleared[] = sprintf('[%s]', CacheEntity::EVENT_SUBSCRIBER->name);
+    }
+
+    if ($console->getFlag('t')) {
+      $this->cache->setCacheEntity(CacheEntity::COMMAND);
+      $this->cache->clear();
+      $entitiesCleared[] = sprintf('[%s]', CacheEntity::COMMAND->name);
     }
 
     if ($console->getFlag('a')) {
