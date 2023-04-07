@@ -15,9 +15,9 @@ abstract class CacheProvider {
   protected int $expirationTime;
 
   /**
-   * @return void
+   * @return ?bool
    */
-  abstract public function clear(): void;
+  abstract public function clear(): ?bool;
 
   /**
    * @param string $key

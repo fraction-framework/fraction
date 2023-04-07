@@ -14,12 +14,15 @@ class FileCacheProvider extends CacheProvider {
   }
 
   /**
-   * @return void
+   * @return ?bool
    */
-  public function clear(): void {
+  public function clear(): ?bool {
     if (file_exists($this->cacheEntity)) {
       unlink($this->cacheEntity);
+      return true;
     }
+
+    return false;
   }
 
   /**

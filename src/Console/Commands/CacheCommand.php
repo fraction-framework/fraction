@@ -46,8 +46,7 @@ readonly class CacheCommand {
     if ($console->getFlag('a')) {
       foreach (CacheEntity::cases() as $entity) {
         $this->cache->setCacheEntity($entity);
-        $this->cache->clear();
-        $entitiesCleared[] = "[{$entity->name}]";
+        $this->cache->clear() && $entitiesCleared[] = "[{$entity->name}]";
       }
     }
 

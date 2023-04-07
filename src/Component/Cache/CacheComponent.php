@@ -13,10 +13,10 @@ readonly class CacheComponent {
   }
 
   /**
-   * @return void
+   * @return ?bool
    */
-  public function clear(): void {
-    $this->provider->clear();
+  public function clear(): ?bool {
+    return $this->provider->clear();
   }
 
   /**
