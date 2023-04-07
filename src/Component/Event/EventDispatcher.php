@@ -6,7 +6,6 @@ use BackedEnum;
 use Fraction\Component\Cache\CacheEntity;
 use Fraction\Component\Event\Attribute\EventListener;
 use Fraction\Component\Event\Enum\EventType;
-use Fraction\Component\Locator;
 use Fraction\Component\Reader;
 use Fraction\DependencyInjection\ContainerInterface;
 use InvalidArgumentException;
@@ -24,13 +23,12 @@ class EventDispatcher {
   /**
    * @param EventFactory $eventFactory
    * @param Reader $reader
-   * @param Locator $locator
    * @param ContainerInterface $container
    * @throws ReflectionException
    */
-  #[NoReturn] public function __construct(private readonly EventFactory $eventFactory, Reader $reader, Locator $locator, private readonly ContainerInterface $container) {
+  #[NoReturn] public function __construct(private readonly EventFactory $eventFactory, Reader $reader, private readonly ContainerInterface $container) {
 
-    $this->registerListeners($reader, $locator);
+    $this->registerListeners($reader);
   }
 
   /**
@@ -80,12 +78,11 @@ class EventDispatcher {
 
   /**
    * @param Reader $reader
-   * @param Locator $locator
    * @return void
    * @throws ReflectionException
    */
-  #[NoReturn] private function registerListeners(Reader $reader, Locator $locator): void {
-    $subscriberClasses = $reader->retrieveFiles(EventSubscriberInterface::class, $locator->getSourceDir(), CacheEntity::EVENT_SUBSCRIBER);
+  #[NoReturn] private function registerListeners(Reader $reader): void {
+    $subscriberClasses = $reader->getClasses(EventSubscriberInterface::class, CacheEntity::EVENT_SUBSCRIBER);
 
     foreach ($subscriberClasses as $subscriberClass) {
 

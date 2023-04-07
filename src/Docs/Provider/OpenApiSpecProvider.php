@@ -17,7 +17,7 @@ use ReflectionType;
 class OpenApiSpecProvider extends SpecProvider {
 
   protected function generateSpec(): array {
-    $controllers = $this->reader->retrieveFiles(Controller::class, $this->locator->getSourceDir(), CacheEntity::CONTROLLER);
+    $controllers = $this->reader->getClasses(Controller::class, CacheEntity::CONTROLLER);
 
     $openApiSpec = [
       'openapi' => '3.0.0',

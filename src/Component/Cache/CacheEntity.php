@@ -7,5 +7,6 @@ enum CacheEntity: string {
   case CONTROLLER = 'controller';
   case CONFIG = 'config';
   case BINDER = 'binder';
+  case COMMAND = 'command';
   case EVENT_SUBSCRIBER = 'eventSubscriber';
 }
