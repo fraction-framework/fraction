@@ -8,7 +8,6 @@ use Fraction\Component\Event\EventDispatcher;
 use Fraction\Component\Routing\RouteProcessing;
 use Fraction\Component\Routing\Router;
 use Fraction\Component\View\ViewHandler;
-use Fraction\DependencyInjection\BinderReader;
 use Fraction\DependencyInjection\Container;
 use Fraction\DependencyInjection\ContainerInterface;
 use Fraction\Http\Enum\ResponseStatus;
@@ -67,15 +66,8 @@ class Kernel {
    * @throws ReflectionException|FractionException
    */
   private function bootstrap(ContainerInterface $container, ConfigManager $configManager): void {
-    // Register components defined in config
-    $container->registerComponents($configManager->get('components'));
-
     // Initialize event dispatcher
     $this->eventDispatcher = $container->get(EventDispatcher::class);
-
-    // Read binders and register them in the container
-    $binders = $container->get(BinderReader::class)->getBinders();
-    $container->registerBinders($binders);
 
     // Initialize view handler with data from config
     $this->getViewHandler()->initializeFromConfig($configManager);

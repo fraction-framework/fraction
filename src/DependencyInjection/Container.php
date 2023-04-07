@@ -2,6 +2,7 @@
 
 namespace Fraction\DependencyInjection;
 
+use Fraction\Component\Config\ConfigManager;
 use Fraction\Component\Routing\Route;
 use Fraction\DependencyInjection\Attribute\Dependency;
 use Fraction\Throwable\FractionException;
@@ -31,9 +32,22 @@ class Container implements ContainerInterface {
    * @param array $definitions
    * @return static
    */
-  public static function create(array $definitions): static {
+  public static function create(array $definitions = []): static {
     $container = new static(definitions: $definitions);
     $container->set(ContainerInterface::class, fn() => $container);
+
+    try {
+      // Register components defined in config
+      $components = $container->get(ConfigManager::class)->get('components');
+      $container->registerComponents($components);
+
+      // Read binders and register them in the container
+      $binders = $container->get(BinderReader::class)->getBinders();
+      $container->registerBinders($binders);
+    } catch (FractionException) {
+      // ToDO: Log error
+    }
+
     return $container;
   }
 

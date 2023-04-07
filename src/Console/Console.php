@@ -2,7 +2,6 @@
 
 namespace Fraction\Console;
 
-use Fraction\Component\Config\ConfigManager;
 use Fraction\Console\Commands\CacheCommand;
 use Fraction\DependencyInjection\Container;
 use Fraction\DependencyInjection\ContainerInterface;
@@ -37,8 +36,7 @@ class Console implements ConsoleInterface {
    * @return static
    */
   public static function fromArgs($argv): self {
-    $container = Container::create([]);
-    $container->registerComponents($container->get(ConfigManager::class)->get('components'));
+    $container = Container::create();
 
     $console = new self($container);
     try {
