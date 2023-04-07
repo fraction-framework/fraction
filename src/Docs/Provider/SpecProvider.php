@@ -4,11 +4,10 @@ namespace Fraction\Docs\Provider;
 
 use Fraction\Component\Cache\CacheComponent;
 use Fraction\Component\Config\ConfigManager;
-use Fraction\Component\Locator;
 use Fraction\Component\Reader;
 
 abstract class SpecProvider {
-  public function __construct(protected Reader $reader, protected ConfigManager $config, protected CacheComponent $cache, protected Locator $locator) {
+  public function __construct(protected Reader $reader, protected ConfigManager $config, protected CacheComponent $cache) {
   }
 
   public function getSpec(): array {
