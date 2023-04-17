@@ -6,6 +6,7 @@ use Fraction\Component\Cache\CacheEntity;
 use Fraction\Component\Reader;
 use Fraction\Console\Attribute\Command;
 use Fraction\Console\Commands\CacheCommand;
+use Fraction\Console\Commands\DevServerCommand;
 use Fraction\DependencyInjection\Container;
 use Fraction\DependencyInjection\ContainerInterface;
 use Fraction\Throwable\FractionException;
@@ -34,6 +35,7 @@ class Console implements ConsoleInterface {
 
     $this->registerCommandFromArray([
       CacheCommand::class,
+      DevServerCommand::class,
       ...$commandClasses
     ]);
   }
