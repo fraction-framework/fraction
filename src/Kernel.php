@@ -10,6 +10,7 @@ use Fraction\Component\Routing\Router;
 use Fraction\Component\View\ViewHandler;
 use Fraction\DependencyInjection\Container;
 use Fraction\DependencyInjection\ContainerInterface;
+use Fraction\Http\Cors;
 use Fraction\Http\Enum\ResponseStatus;
 use Fraction\Http\Request;
 use Fraction\Throwable\FractionException;
@@ -66,6 +67,9 @@ class Kernel {
    * @throws ReflectionException|FractionException
    */
   private function bootstrap(ContainerInterface $container, ConfigManager $configManager): void {
+    // Handle CORS
+    Cors::fromConfig($configManager)->send(...$container->fromArray([Request::class]));
+
     // Initialize event dispatcher
     $this->eventDispatcher = $container->get(EventDispatcher::class);
 
