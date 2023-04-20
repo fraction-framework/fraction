@@ -107,7 +107,7 @@ class ViewHandler {
    */
   public function initializeFromConfig(ConfigManager $configManager): static {
     $this->setResponseType($configManager->get('view.response.format'));
-    $this->setHeaders($configManager->get('view.response.headers'));
+    $this->setHeaders([...$configManager->get('cors'), ...$configManager->get('view.response.headers')]);
     $this->setTemplateEngine($configManager->get('templating.engine'));
     $this->setTemplatesPath($configManager->get('templating.template_dir'));
 
@@ -201,6 +201,7 @@ class ViewHandler {
    */
   private function responseMiddleware(Response $response): Response {
     $response->addHeader('X-Powered-By', 'Fraction Framework');
+
 
     foreach ($this->getHeaders() as $key => $value) {
       $response->addHeader($key, $value);
