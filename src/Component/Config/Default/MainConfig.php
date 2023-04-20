@@ -24,7 +24,10 @@ class MainConfig extends AbstractConfig {
         fn($group) => $group
           ->addChild('response')
           ->addGroup(
-            fn($group) => $group->addChild('format', 'json')->addResolver(fn($value) => ResponseType::from($value))
+            function (ConfigNodeGroup $group) {
+              $group->addChild('format', 'json')->addResolver(fn($value) => ResponseType::from($value));
+              $group->addChild('headers', []);
+            }
           )
       );
 

@@ -18,12 +18,33 @@ use Fraction\Throwable\FractionException;
 use Fraction\Throwable\NotFoundException;
 
 class ViewHandler {
+  /**
+   * @var mixed
+   */
   private mixed $data;
+  /**
+   * @var array
+   */
+  private array $headers = [];
+  /**
+   * @var ResponseStatus
+   */
   private ResponseStatus $responseStatus = ResponseStatus::OK;
-
+  /**
+   * @var ResponseType
+   */
   private ResponseType $responseType = ResponseType::PLAIN;
+  /**
+   * @var string|null
+   */
   private ?string $template;
+  /**
+   * @var TemplateEngine
+   */
   private TemplateEngine $templateEngine;
+  /**
+   * @var string
+   */
   private string $templatesPath;
 
   /**
@@ -43,9 +64,27 @@ class ViewHandler {
     }
 
     $response = $callback($route);
+
+    if (is_object($response) && method_exists($response, 'toArray')) {
+      $response = $response->toArray();
+    }
     $this->setData($response);
 
     return $this;
+  }
+
+  /**
+   * @return array
+   */
+  public function getHeaders(): array {
+    return $this->headers;
+  }
+
+  /**
+   * @param array $headers
+   */
+  public function setHeaders(array $headers): void {
+    $this->headers = $headers;
   }
 
   /**
@@ -68,6 +107,7 @@ class ViewHandler {
    */
   public function initializeFromConfig(ConfigManager $configManager): static {
     $this->setResponseType($configManager->get('view.response.format'));
+    $this->setHeaders($configManager->get('view.response.headers'));
     $this->setTemplateEngine($configManager->get('templating.engine'));
     $this->setTemplatesPath($configManager->get('templating.template_dir'));
 
@@ -78,6 +118,44 @@ class ViewHandler {
    * @return Response
    */
   public function render(): Response {
+    $response = $this->createResponse();
+    return $this->responseMiddleware($response);
+  }
+
+  /**
+   * @param mixed $data
+   * @param ResponseStatus $responseStatus
+   */
+  public function setData(mixed $data, ResponseStatus $responseStatus = ResponseStatus::OK): void {
+    $this->data = $data;
+    $this->responseStatus = $responseStatus;
+  }
+
+  /**
+   * @param ?string $template
+   */
+  public function setTemplate(?string $template): void {
+    $this->template = $template;
+  }
+
+  /**
+   * @param TemplateEngine $templateEngine
+   */
+  public function setTemplateEngine(TemplateEngine $templateEngine): void {
+    $this->templateEngine = $templateEngine;
+  }
+
+  /**
+   * @param string $templatesPath
+   */
+  public function setTemplatesPath(string $templatesPath): void {
+    $this->templatesPath = $templatesPath;
+  }
+
+  /**
+   * @return Response
+   */
+  private function createResponse(): Response {
     $data = $this->data;
 
     if ($data instanceof Response) {
@@ -118,32 +196,15 @@ class ViewHandler {
   }
 
   /**
-   * @param mixed $data
-   * @param ResponseStatus $responseStatus
+   * @param Response $response
+   * @return Response
    */
-  public function setData(mixed $data, ResponseStatus $responseStatus = ResponseStatus::OK): void {
-    $this->data = $data;
-    $this->responseStatus = $responseStatus;
-  }
+  private function responseMiddleware(Response $response): Response {
+    $response->addHeader('X-Powered-By', 'Fraction Framework');
 
-  /**
-   * @param ?string $template
-   */
-  public function setTemplate(?string $template): void {
-    $this->template = $template;
-  }
-
-  /**
-   * @param TemplateEngine $templateEngine
-   */
-  public function setTemplateEngine(TemplateEngine $templateEngine): void {
-    $this->templateEngine = $templateEngine;
-  }
-
-  /**
-   * @param string $templatesPath
-   */
-  public function setTemplatesPath(string $templatesPath): void {
-    $this->templatesPath = $templatesPath;
+    foreach ($this->getHeaders() as $key => $value) {
+      $response->addHeader($key, $value);
+    }
+    return $response;
   }
 }
