@@ -39,6 +39,14 @@ class EnvironmentParameterBag {
   }
 
   /**
+   * @param array $keys
+   * @return array
+   */
+  public function getBulk(array $keys): array {
+    return array_map(fn($key) => $this->get($key), $keys);
+  }
+
+  /**
    * @param string $key
    * @return bool
    */

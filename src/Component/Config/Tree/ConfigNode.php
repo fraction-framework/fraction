@@ -106,7 +106,7 @@ class ConfigNode {
    */
   public function toArray(): array {
     if ($this->isGroupValue()) {
-      return array_map(fn($node) => $node->toArray(), $this->value->getChildren());
+      return array_reduce($this->value->getChildren(), fn($carry, $node) => array_merge($carry, $node->toArray()), []);
     }
 
     return [$this->name => $this->value];

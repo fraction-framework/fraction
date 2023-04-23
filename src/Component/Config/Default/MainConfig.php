@@ -24,9 +24,21 @@ class MainConfig extends AbstractConfig {
         fn($group) => $group
           ->addChild('response')
           ->addGroup(
-            fn($group) => $group->addChild('format', 'json')->addResolver(fn($value) => ResponseType::from($value))
+            function (ConfigNodeGroup $group) {
+              $group->addChild('format', 'json')->addResolver(fn($value) => ResponseType::from($value));
+              $group->addChild('headers', []);
+            }
           )
       );
+
+    $root->addChild('cors')
+      ->addGroup(function (ConfigNodeGroup $group) {
+        $group->addChild('Access-Control-Allow-Origin', '*');
+        $group->addChild('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        $group->addChild('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        $group->addChild('Access-Control-Allow-Credentials', 'true');
+        $group->addChild('Access-Control-Max-Age', '86400');
+      });
 
     $root->addChild('templating')
       ->addGroup(function (ConfigNodeGroup $group) {

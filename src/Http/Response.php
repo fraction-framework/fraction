@@ -8,8 +8,12 @@ class Response {
   public function __construct(
     private readonly ResponseStatus $status = ResponseStatus::OK,
     private readonly string         $body = '',
-    private readonly array          $headers = [],
+    private array                   $headers = [],
   ) {
+  }
+
+  public function addHeader(string $name, string $value): void {
+    $this->headers[$name] = $value;
   }
 
   public function send(): void {
