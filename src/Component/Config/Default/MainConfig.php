@@ -34,7 +34,7 @@ class MainConfig extends AbstractConfig {
     $root->addChild('cors')
       ->addGroup(function (ConfigNodeGroup $group) {
         $group->addChild('Access-Control-Allow-Origin', '*');
-        $group->addChild('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        $group->addChild('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
         $group->addChild('Access-Control-Allow-Headers', 'Content-Type, Authorization');
         $group->addChild('Access-Control-Allow-Credentials', 'true');
         $group->addChild('Access-Control-Max-Age', '86400');

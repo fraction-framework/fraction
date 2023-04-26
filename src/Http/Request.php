@@ -27,7 +27,7 @@ class Request {
       headers: ParameterBag::createFormArray(getallheaders()),
       cookies: ParameterBag::createFormArray($_COOKIE),
       query: ParameterBag::createFormArray($_GET),
-      body: ParameterBag::createFormArray($_POST),
+      body: ParameterBag::createFromStdIn(),
       files: ParameterBag::createFormArray($_FILES),
       server: ParameterBag::createFormArray($_SERVER)
     );
