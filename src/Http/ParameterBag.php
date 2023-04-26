@@ -13,6 +13,13 @@ class ParameterBag {
     return new static($parameters);
   }
 
+  public static function createFromStdIn(): static {
+    $parameters = [];
+    $str = file_get_contents('php://input');
+    parse_str($str, $parameters);
+    return new static($parameters);
+  }
+
   public function all(): array {
     return $this->parameters;
   }
