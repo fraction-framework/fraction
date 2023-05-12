@@ -7,4 +7,7 @@ enum ParameterType: string {
   case INT = 'int';
   case FLOAT = 'float';
   case BOOL = 'bool';
+  case ARRAY = 'array';
+  case OBJECT = 'object';
+  case ANY = 'any';
 }

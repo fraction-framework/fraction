@@ -12,6 +12,9 @@ class Parameter {
     'int' => '\d+',
     'float' => '\d+\.\d+',
     'bool' => 'true|false',
+    'array' => '\[.*\]',
+    'object' => '\{.*\}',
+    'any' => '.*'
   ];
 
   public function __construct(

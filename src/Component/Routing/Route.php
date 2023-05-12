@@ -185,6 +185,10 @@ class Route {
           $carry[$param->getName()] = 'This field is required';
         }
 
+        if (is_array($value)) {
+          $value = json_encode($value);
+        }
+
         if ($value !== null && !preg_match("/{$param->getPattern()}/", $value)) {
           $carry[$param->getName()] = "Doesn't match the pattern `{$param->getPattern()}`";
         }
