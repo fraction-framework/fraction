@@ -1,7 +1,7 @@
 {
   "name": "fraction-framework/fraction",
   "description": "Attribute-driven PHP framework",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "license": "MIT",
   "authors": [
     {
