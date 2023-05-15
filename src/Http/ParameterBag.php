@@ -16,7 +16,19 @@ class ParameterBag {
   public static function createFromStdIn(): static {
     $parameters = [];
     $str = file_get_contents('php://input');
-    parse_str($str, $parameters);
+
+    $contentType = $_SERVER['CONTENT_TYPE'] ?? 'application/x-www-form-urlencoded';
+
+    if ($contentType === 'application/x-www-form-urlencoded') {
+      parse_str($str, $parameters);
+      return new static($parameters);
+    }
+
+    if ($contentType === 'application/json') {
+      $parameters = json_decode($str, true);
+      return new static($parameters);
+    }
+
     return new static($parameters);
   }
 
