@@ -14,6 +14,14 @@ class Node {
    */
   private array $namedParamsList = [];
   /**
+   * @var string|null
+   */
+  private ?string $paramName = null;
+  /**
+   * @var string|null
+   */
+  private ?string $paramTemplate = null;
+  /**
    * @var Route|null
    */
   private ?Route $route = null;
@@ -25,11 +33,15 @@ class Node {
   public function addChild(string $segment): Node {
     if (preg_match('/^{([a-zA-Z0-9_]+)}$/', $segment, $matches)) {
       $segment = $matches[1];
-      $this->namedParamsList[] = $segment;
+      $this->setParamName($segment);
+
+      if (!in_array($segment, $this->namedParamsList)) {
+        $this->namedParamsList[] = $segment;
+      }
     }
 
     if (array_key_exists($segment, $this->children)) {
-      return $this->children[$segment];
+      return $this->getChildOrNull($segment);
     }
 
     $child = new self();
@@ -57,6 +69,34 @@ class Node {
     }
 
     return $params;
+  }
+
+  /**
+   * @return string|null
+   */
+  public function getParamName(): ?string {
+    return $this->paramName;
+  }
+
+  /**
+   * @param string|null $paramName
+   */
+  public function setParamName(?string $paramName): void {
+    $this->paramName = $paramName;
+  }
+
+  /**
+   * @return string|null
+   */
+  public function getParamTemplate(): ?string {
+    return $this->paramTemplate;
+  }
+
+  /**
+   * @param string|null $paramTemplate
+   */
+  public function setParamTemplate(?string $paramTemplate): void {
+    $this->paramTemplate = $paramTemplate;
   }
 
   /**

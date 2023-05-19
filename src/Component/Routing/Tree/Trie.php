@@ -18,7 +18,14 @@ class Trie {
     $node = $this->getRoot($route->getMethod());
 
     foreach ($route->getPathSegments() as $segment) {
-      $node = $node->addChild($segment);
+      $child = $node->addChild($segment);
+
+      if ($node->getParamName() && !$child->getRoute()) {
+        $paramName = $node->getParamName();
+        $child->setParamTemplate($route->getParamTemplate($paramName));
+      }
+
+      $node = $child;
     }
 
     $node->setRoute($route);
@@ -43,11 +50,8 @@ class Trie {
 
       $lastMatchedNode = null;
       foreach ($node->getNamedParams() as $paramName => $paramNode) {
-        if (!($route = $paramNode->getRoute())) {
-          continue;
-        }
-
-        $paramTemplate = $route->getParamTemplate($paramName);
+        $paramTemplate = $paramNode->getParamTemplate()
+          ?? $paramNode->getRoute()?->getParamTemplate($paramName);
 
         if (preg_match("#^$paramTemplate$#", $segment, $matches)) {
           $requestParams[$paramName] = array_pop($matches);
@@ -72,6 +76,10 @@ class Trie {
     return null;
   }
 
+  /**
+   * @param string $method
+   * @return Node
+   */
   private function getRoot(string $method): Node {
     return $this->root[$method] ??= new Node();
   }
