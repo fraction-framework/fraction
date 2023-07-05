@@ -1,4 +1,4 @@
-<p align="center"><a href="https://fraction.anir.cloud" target="_blank"><img src="https://github.com/fraction-framework/fraction/blob/main/images/logo.png?raw=true" width="300" alt="Fraction Logo"></a></p>
+<p align="center"><a href="https://fraction.anir.cloud" target="_blank"><img src="https://fraction.anir.cloud/logo.png" width="300" alt="Fraction Logo"></a></p>
 
 <p align="center">
 <a href="https://packagist.org/packages/fraction-framework/fraction"><img src="https://img.shields.io/packagist/v/fraction-framework/fraction" alt="Latest Stable Version"></a>
